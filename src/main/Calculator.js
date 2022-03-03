@@ -22,9 +22,40 @@ class Calculator extends Component {
     setOperation = (operation) => {
         if (this.state.current == 0) {
             this.setState({operation, current: 1, clearDisplay: true}, () => console.log(this.state))
-        }
+            
+        } else {
+            const currentOperation = this.state.operation
+            const values = [...this.state.values]
+            const equals = operation == '='
 
-        console.log(this.state)
+            switch (currentOperation) {
+                case '+':
+                    values[0] += values[1]
+                    break
+                case '-':
+                    values[0] -= values[1]
+                    break
+                case '/':
+                    values[0] /= values[1]
+                    break
+                case '*':
+                    values[0] *= values[1]
+                    break
+                default:
+                    values[0] = this.state.values[0]
+            }
+            
+            values[1] = 0
+
+            this.setState({
+                displayValue: String(values[0].toFixed(8)),
+                values: [...values],
+                operation: equals ? null : operation,
+                current: equals ? 0 : 1,
+                clearDisplay: !equals
+            }, () => console.log(this.state))
+
+        }
 
     }
 
